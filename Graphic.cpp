@@ -70,30 +70,52 @@ bool Graphic::draw_axis() {
 	return false;
 }
 
-bool Graphic::draw_fun(double x,long double y) {
-	if (y == INFINITY||y>f.Y/radio) {
-		y = long double(f.Y / radio);
-	}
-	else if (y == -INFINITY||y< -f.Y / radio) {
-		y = (long double)-f.Y / radio;
-	}
-		int num_size = num.size();
+bool Graphic::draw_fun(double x,double y) {
+	int num_size = num.size();
+	num.push_back(y * radio);
+	if (!isnan(double(y)) && !isinf(double(y)) ) {
 		SetPixel(hdc, x * radio + O.X, O.Y - y * radio, color);
-		num.push_back(y * radio);
-		if (num_size > 1) {
-			if (num[num_size - 2] > y * radio) {
-				for (int m = 0; m <= (num[num_size - 2] - y * radio) / 2; m++) {
+		if (num_size > 1 && !isnan(double(num[num_size - 2])) ) {
+			//cout << "81" << endl;
+			//cout << num[num_size - 2] << endl;
+			//cout << x << endl;
+			double deta = num[num_size - 2] - y * radio;
+			if (deta > 0 && deta < 2 * width) {
+				for (int m = 0; m <= deta / 2; m++) {
 					SetPixel(hdc, x * radio + O.X - 1, O.Y - ((num[num_size - 2] + y * radio) / 2 - m), color);
 					SetPixel(hdc, x * radio + O.X, O.Y - ((num[num_size - 2] + y * radio) / 2 + m), color);
 				}
 			}
-			else if (num[num_size - 2] < y * radio) {
-				for (int m = 0; m <= -(num[num_size - 2] - y * radio) / 2; m++) {
+			else if (deta<0 && deta>-2 * width) {
+				for (int m = 0; m <= -deta / 2; m++) {
 					SetPixel(hdc, x * radio + O.X - 1, O.Y - ((num[num_size - 2] + y * radio) / 2 + m), color);
 					SetPixel(hdc, x * radio + O.X, O.Y - ((num[num_size - 2] + y * radio) / 2 - m), color);
 				}
 			}
+			else if (deta >= 2 * width ) {
+				for (int m = 0; m <= width; m++) {
+					SetPixel(hdc, x * radio + O.X, O.Y - (y*radio + m), color);
+				}
+			}
+			else if (deta <= -2 * width ) {
+				for (int m = 0; m <= width; m++) {
+					SetPixel(hdc, x * radio + O.X, O.Y - (y*radio - m), color);
+				}
+			}
 		}
+	}
+	else if(num_size>1) {
+		if (y==INFINITY) {
+					for (int m = 0; m <= width; m++) {
+						SetPixel(hdc, x * radio + O.X-1, O.Y - (num[num_size - 2] + m), color);
+					}
+			}
+					else if (y==-INFINITY) {
+					for (int m = 0; m <= width; m++) {
+						SetPixel(hdc, x * radio + O.X-1, O.Y - (num[num_size - 2] - m), color);
+					}
+			}
+	}
 	return 1;
 }
 

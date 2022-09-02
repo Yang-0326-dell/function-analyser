@@ -143,7 +143,6 @@ bool structure::match_bracket(Struct *st)
 				}
 			}
 		}
-
 		//Thirdly, DIVIDE COMPLETELY PS.这一段大改22次
 		if (add_list.size() != 0) {
 			string str = "";
@@ -155,7 +154,7 @@ bool structure::match_bracket(Struct *st)
 					str.append(divided_content[j]);
 					reb++;
 				}
-				if (reb == 1 && str.size() != 1) {
+				if (reb == 1 && str[0] == '(') {
 					string::iterator it = str.begin();
 					str.erase(it);
 					str.pop_back();
@@ -193,7 +192,7 @@ bool structure::match_bracket(Struct *st)
 						reb++;
 					}
 				}
-				if (reb==1 && str.size() != 1) {
+				if (reb==1 && str[0] == '(') {
 					string::iterator it = str.begin();
 					str.erase(it);
 					str.pop_back();
@@ -224,7 +223,7 @@ bool structure::match_bracket(Struct *st)
 				str.append(divided_content[j]);
 				reb++;
 			}
-			if (reb == 1 && str.size() != 1) {
+			if (reb == 1 && str[0] == '(') {
 				string::iterator it = str.begin();
 				str.erase(it);
 				str.pop_back();
@@ -256,7 +255,7 @@ bool structure::match_bracket(Struct *st)
 					}
 				}
 
-				if (reb == 1 && str.size() != 1) {
+				if (reb == 1 && str[0]== '(') {
 					string::iterator it = str.begin();
 					str.erase(it);
 					str.pop_back();
@@ -275,11 +274,25 @@ bool structure::match_bracket(Struct *st)
 		branch.resize(2);
 		string str1 = "";
 		string str2 = "";
+		int rem1 = 0, rem2 = 0;//Check if....
 		for (short i = 0; i < pow_list[0]; i++) {
-			str1.push_back(variator[i]);
+			str1.append(divided_content[i]);
+			rem1++;
 		}
-		for (short i = pow_list[0] + 1; i < variator.size(); i++) {
-			str1.push_back(variator[i]);
+		for (short i = pow_list[0] + 1; i < divided_content.size(); i++) {
+			str2.append(divided_content[i]);
+			rem2++;
+		}
+		cout << str1 << " " << str2 << endl;
+		if (rem1 == 1 && str1[0] == '(') {
+			string::iterator it = str1.begin();
+			str1.erase(it);
+			str1.pop_back();
+		}
+		if (rem2 == 1 && str2[0] == '(') {
+			string::iterator it = str2.begin();
+			str2.erase(it);
+			str2.pop_back();
 		}
 		st->branch[0].variator = str1;
 		st->branch[1].variator = str2;
@@ -293,15 +306,29 @@ bool structure::match_bracket(Struct *st)
 		operate = POW;
 }
 		else if (log_list.size() != 0) {
+
 		st->branch.resize(2);
 		branch.resize(2);
 		string str1 = "";
 		string str2 = "";
+		int rem1 = 0, rem2 = 0;//Check if...
 		for (short i = 0; i < log_list[0]; i++) {
-			str1.push_back(variator[i]);
+			str1.append(divided_content[i]);
+			rem1++;
 		}
-		for (short i = log_list[0] + 1; i < variator.size(); i++) {
-			str2.push_back(variator[i]);
+		for (short i = log_list[0] + 1; i < divided_content.size(); i++) {
+			str2.append(divided_content[i]);
+			rem2++;
+		}
+		if (rem1 == 1 && str1[0] == '(') {
+			string::iterator it = str1.begin();
+			str1.erase(it);
+			str1.pop_back();
+		}
+		if (rem2 == 1 && str2[0] == '(') {
+			string::iterator it = str2.begin();
+			str2.erase(it);
+			str2.pop_back();
 		}
 		st->branch[0].variator = str1;
 		st->branch[1].variator = str2;
@@ -599,6 +626,9 @@ bool function_body::output1(Struct s) {
 	}
 	else if (s.operate == VAR2) {
 		cout << "Y";
+	}
+	else if (s.operate == POW) {
+		cout << "POW";
 	}
 	cout << endl;
 

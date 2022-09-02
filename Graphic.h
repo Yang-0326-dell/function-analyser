@@ -21,7 +21,7 @@ public:
 	Graphic();
 	bool ini();
 	bool draw_axis();
-	bool draw_fun(double,long double);
+	bool draw_fun(double,double);
 	bool redraw();
 };
 

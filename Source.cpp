@@ -20,11 +20,11 @@ int main()
 	Graphic gr;
 	bo1:
 	gr.ini();
+	cout << "f(x)=" << test.function << endl;
 	gr.draw_axis();
-
 	for (double i = -gr.width /2; i < gr.width / 2; i+=gr.precision) {
 		test.ori = i ;//default beginning at middle
-		gr.draw_fun(i , test.calculate(test.result).result);
+		gr.draw_fun(i , double(test.calculate(test.result).result));
 		//cout << i << " "<<test.calculate(test.result).result << endl;
 	}
 	string qq = "";
